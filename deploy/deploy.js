@@ -15,17 +15,17 @@ function openAccount(file, passwd) {
     return vntkit.account.decrypt(content, passwd, false)
 }
 
-var account = openAccount(ksdir + kfile, password);
+var account1 = openAccount(ksdir + kfile, password);
 
-// var from1 = '0x59b534adc54a79d20d07d379383bbfc8306fe93b';
-// var from1Keystore = '{"version":3,"id":"7cf78ea8-ebd1-4fe5-92d9-d77ce6ac9cdb","address":"59b534adc54a79d20d07d379383bbfc8306fe93b","crypto":{"ciphertext":"eb3d5a688144727971ec787d47cc69c69186143845c6c0f759c9efe44d5dd47e","cipherparams":{"iv":"00b054f71bac52fc7bc9b06d01bff5c1"},"cipher":"aes-128-ctr","kdf":"scrypt","kdfparams":{"dklen":32,"salt":"47d818c860f2d6ff6da48087f420b6d1d3fa8330d6bddff2d93ad92631462be5","n":8192,"r":8,"p":1},"mac":"e03638d378bb0c704490252d40310728e90281a4b560b23a8ff4ade4e9da4a27"}}';
-// var pass1 = 'zyl7758258';
-// var account = vntkit.account.decrypt(from1Keystore, pass1, false);
+var from1 = '0x59b534adc54a79d20d07d379383bbfc8306fe93b';
+var from1Keystore = '{"version":3,"id":"7cf78ea8-ebd1-4fe5-92d9-d77ce6ac9cdb","address":"59b534adc54a79d20d07d379383bbfc8306fe93b","crypto":{"ciphertext":"eb3d5a688144727971ec787d47cc69c69186143845c6c0f759c9efe44d5dd47e","cipherparams":{"iv":"00b054f71bac52fc7bc9b06d01bff5c1"},"cipher":"aes-128-ctr","kdf":"scrypt","kdfparams":{"dklen":32,"salt":"47d818c860f2d6ff6da48087f420b6d1d3fa8330d6bddff2d93ad92631462be5","n":8192,"r":8,"p":1},"mac":"e03638d378bb0c704490252d40310728e90281a4b560b23a8ff4ade4e9da4a27"}}';
+var pass1 = 'zyl7758258';
+var account = vntkit.account.decrypt(from1Keystore, pass1, false);
 
 //定义代码路径
-var codeFile = "../contract/output/TestContract.compress"
+var codeFile = "../contract/output/ERC721.compress"
 //定义abi路径
-var abiFile = "../contract/output/TestContract.abi"
+var abiFile = "../contract/output/ERC721.abi"
 //读取abi数据
 var wasmabi = fs.readFileSync(abiFile)
 //将abi数据解析成json结构
@@ -68,7 +68,7 @@ function getContractAddress(transactionHash) {
     return vnt.core.getTransactionReceipt(transactionHash);
 }
 
-function send(funct, list, Account, nonce) {
+function send(funct, list, Account, nonce, Amount=0) {
     var contract = vnt.core.contract(abi);
     var data = contract.packFunctionData(funct, list);
 
@@ -77,7 +77,7 @@ function send(funct, list, Account, nonce) {
         nonce: vnt.toHex(nonce),
         gasPrice: vnt.toHex(100000000000),
         gasLimit: vnt.toHex(4000000),
-        value: vnt.toHex(0),
+        value: vnt.toHex(Amount),
         data: data
     }
     var chain = Cm.forCustomChain(1, { name: 'testnet', networkId: 2, chainId: 2, url: url }, 'petersburg');
@@ -91,7 +91,7 @@ function send(funct, list, Account, nonce) {
             return;
         }
         else {
-            console.log(txHash)
+            console.log("transaction hash: ", txHash);
         }
     })
 }
@@ -100,10 +100,15 @@ function getNonce(account) {
     return vnt.core.getTransactionCount(account.address);
 }
 
-// console.log(getContractAddress("0xae2a3709f912659192c1718770307b0a88509fbd59b39b50b9b55ff4afdd3a7e")['contractAddress']);
-contractAddress='0x3fc29ed1ea5b60e2f204519847777749de02eca7';
+// deployWasmContract();
+contractAddress=getContractAddress("0x5886792f6676c1f816703886cbcf075cc1668b5f0f679bc5d2f31cedffad6e0a")['contractAddress'];
 var contract = vnt.core.contract(abi).at(contractAddress);
-send('SetVar1',[5],account,getNonce(account));
-send('SetVar2',[2],account,getNonce(account)+1);
-// var result=contract.test.call();
+// send('mint',["lee",1],account,getNonce(account));
+// send('mint',["Irving",2],account,getNonce(account)+1);
+// send('mint',["LeBorn James",23],account1,getNonce(account1));
+send('$buyToken',[0],account1,getNonce(account1),2e18);
+// send('changeTokenPrice',[0,6],account,getNonce(account));
+// const tmp=vnt.core.getTransactionReceipt('0xbffa8121a68c9411fa5482395bcb368711e4ad905a90d5cd6806c015773d4218');
+// console.log(a);
+// var result=contract.ownerOf.call('0');
 // console.log(result.toString());

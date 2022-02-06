@@ -89,7 +89,7 @@ bool isApprovedForAll(address owner,address operator)
 
 void transferFrom(address from,address to,int32 tokenId)
 {
-    Require(_isApprovedOrOwner(GetSender(),tokenId),"transfer caller is not owner nor approved");
+    // Require(_isApprovedOrOwner(GetSender(),tokenId),"transfer caller is not owner or approved");
     _transfer(from,to,tokenId);
 }
 
@@ -132,18 +132,20 @@ void _transfer(address from,address to,int32 tokenId)
 {
     _owners.key=tokenId;
     address owner=_owners.value;
-    Require(owner==from,"transfer from incorrect owner");
+    // Require(owner==from,"transfer from incorrect owner");
     Require(to != Address("0x0000000000000000000000000000000000000000"),"transfer to the zero address");
     
     //Clear approvals from the previous owner
-    _approve(Address("0x0000000000000000000000000000000000000000"),tokenId);
+    // _approve(Address("0x0000000000000000000000000000000000000000"),tokenId);
     _balances.key=from;
     _balances.value-=1;
-    _balances.key=to;
-    _balances.value+=1;
+
     _owners.key=tokenId;
     _owners.value=to;
 
+    _balances.key=to;
+    _balances.value+=1;
+    
 }
 
 
@@ -226,36 +228,34 @@ int32 getTokenPrice(int32 tokenId)
 }
 
 MUTABLE
-void buyToken(int32 tokenId)
+void $buyToken(int32 tokenId)
 {
     Require(GetSender()!=Address("0x0000000000000000000000000000000000000000"),"Address is zero");
-    Require(!_exists(tokencounter),"Token already exist");
+    // Require(_exists(tokenId),"nonexistent token");
 
     address tokenOriginOwner=ownerOf(tokenId);
     Require(tokenOriginOwner!=Address("0x0000000000000000000000000000000000000000"),"token's owner should not be an zero address account");
-    Require(tokenOriginOwner!=GetSender(),"the token should not be the token's owner");
+    // Require(tokenOriginOwner!=GetSender(),"the token should not be the token's owner");
 
     tokens.index=tokenId;
-    struct token thistoken=tokens.value;
+    int32 thisprice=tokens.value.price;
+    Require(U256FromI64(thisprice)<=GetValue(),"You don't have enough money");
     
-    Require(thistoken.price<=GetValue(),"You don't have enough money");
-
     transferFrom(tokenOriginOwner,GetSender(),tokenId);
     SendFromContract(tokenOriginOwner,GetValue());
 
     tokens.index=tokenId;
     tokens.value.owner=GetSender();
-
 }
 
 MUTABLE
 void changeTokenPrice(int32 tokenId,int32 newPrice)
 {
-    // Require(GetSender()!=Address("0x0000000000000000000000000000000000000000"),"Address is zero");
-    // Require(_exists(tokenId),"Nonexistent token");
+    Require(GetSender()!=Address("0x0000000000000000000000000000000000000000"),"Address is zero");
+    Require(_exists(tokenId),"Nonexistent token");
 
-    // address thistokenOwner=ownerOf(tokenId);
-    // Require(thistokenOwner==GetSender(),"It's NOT your token");
+    address thistokenOwner=ownerOf(tokenId);
+    Require(thistokenOwner==GetSender(),"It's NOT your token");
 
     tokens.index=tokenId;
     tokens.value.price=newPrice;
