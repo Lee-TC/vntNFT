@@ -5,6 +5,7 @@ struct token{
   string name;
   address owner;
   int32 price;
+  string hash;
 };
 
 KEY address tokenowner;
@@ -36,7 +37,7 @@ void _setApprovalForAll(address owner,address operator,bool approved);
 void _burn(int32 tokenId);
 bool _isApprovedOrOwner(address spender,int32 tokenId);
 
-void mint(string name,int32 price);
+void mint(string name,int32 price,string hash);
 void buyToken(int32 tokenId);
 void changeTokenPrice(int32 tokenId,int32 newPrice);
 int32 totaltoken();
@@ -188,7 +189,7 @@ bool _isApprovedOrOwner(address spender,int32 tokenId)
 
 
 MUTABLE
-void mint(string name,int32 price)
+void mint(string name,int32 price,string hash)
 {
     Require(GetSender()!=Address("0x0000000000000000000000000000000000000000"),"Address is zero");
 
@@ -198,6 +199,7 @@ void mint(string name,int32 price)
     newtoken.name=name;
     newtoken.price=price;
     newtoken.owner=GetSender();
+    newtoken.hash=hash;
     newtoken.tokenId=tokencounter;
 
     tokens.length+=1;
@@ -221,10 +223,17 @@ string getTokenName(int32 tokenId)
 }
 
 UNMUTABLE
-int32 getTokenPrice(int32 tokenId)
+uint256 getTokenPrice(int32 tokenId)
 {
     tokens.index=tokenId;
-    return tokens.value.price;
+    return U256FromI64(tokens.value.price);
+}
+
+UNMUTABLE
+int32 getTokenHash(int32 tokenId)
+{
+    tokens.index=tokenId;
+    return tokens.value.hash;
 }
 
 MUTABLE
@@ -235,15 +244,17 @@ void $buyToken(int32 tokenId)
 
     address tokenOriginOwner=ownerOf(tokenId);
     Require(tokenOriginOwner!=Address("0x0000000000000000000000000000000000000000"),"token's owner should not be an zero address account");
-    // Require(tokenOriginOwner!=GetSender(),"the token should not be the token's owner");
+    Require(tokenOriginOwner!=GetSender(),"the token should not be the token's owner");
 
     tokens.index=tokenId;
     int32 thisprice=tokens.value.price;
-    Require(U256FromI64(thisprice)<=GetValue(),"You don't have enough money");
+    Require(U256_Cmp(GetValue(),U256FromI64(thisprice))>=0,"You don't have enough money");
     
     transferFrom(tokenOriginOwner,GetSender(),tokenId);
+    //必须先向合约转账，使合约有余额，之后再让合约向地址转账
+    SendFromContract(GetContractAddress(),GetValue());
+    //转账成功之后，必须等到下一次交易，余额才会发生改变！！
     SendFromContract(tokenOriginOwner,GetValue());
-
     tokens.index=tokenId;
     tokens.value.owner=GetSender();
 }
@@ -261,3 +272,5 @@ void changeTokenPrice(int32 tokenId,int32 newPrice)
     tokens.value.price=newPrice;
 
 }
+//fallback方法，因为有向合约转账的函数，故必须添加fallback函数
+$_() {}
