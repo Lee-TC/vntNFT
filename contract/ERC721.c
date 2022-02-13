@@ -108,7 +108,7 @@ bool _exists(int32 tokenId)
 
 void _mint(address to,int32 tokenId)
 {
-    Require(to!=Address("0x0000000000000000000000000000000000000000"),"mint to the zero address");
+    Require(!Equal(to,Address("0x0000000000000000000000000000000000000000")),"mint to the zero address");
     Require(!_exists(tokenId),"token already minted");
 
     _isexist.length+=1;
@@ -134,7 +134,7 @@ void _transfer(address from,address to,int32 tokenId)
     _owners.key=tokenId;
     address owner=_owners.value;
     // Require(owner==from,"transfer from incorrect owner");
-    Require(to != Address("0x0000000000000000000000000000000000000000"),"transfer to the zero address");
+    Require(!Equal(to,Address("0x0000000000000000000000000000000000000000")),"transfer to the zero address");
     
     //Clear approvals from the previous owner
     // _approve(Address("0x0000000000000000000000000000000000000000"),tokenId);
@@ -185,13 +185,13 @@ bool _isApprovedOrOwner(address spender,int32 tokenId)
 }
 
 
-// //合约主体
+//合约主体
 
 
 MUTABLE
 void mint(string name,int32 price,string hash)
 {
-    Require(GetSender()!=Address("0x0000000000000000000000000000000000000000"),"Address is zero");
+    Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
 
     _mint(GetSender(),tokencounter);
     struct token newtoken;
@@ -239,12 +239,12 @@ int32 getTokenHash(int32 tokenId)
 MUTABLE
 void $buyToken(int32 tokenId)
 {
-    Require(GetSender()!=Address("0x0000000000000000000000000000000000000000"),"Address is zero");
+    Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
     // Require(_exists(tokenId),"nonexistent token");
 
     address tokenOriginOwner=ownerOf(tokenId);
-    Require(tokenOriginOwner!=Address("0x0000000000000000000000000000000000000000"),"token's owner should not be an zero address account");
-    Require(tokenOriginOwner!=GetSender(),"the token should not be the token's owner");
+    Require(!Equal(tokenOriginOwner,Address("0x0000000000000000000000000000000000000000")),"token's owner should not be an zero address account");
+    Require(!Equal(tokenOriginOwner,GetSender()),"the token should not be the token's owner");
 
     tokens.index=tokenId;
     int32 thisprice=tokens.value.price;
@@ -262,11 +262,12 @@ void $buyToken(int32 tokenId)
 MUTABLE
 void changeTokenPrice(int32 tokenId,int32 newPrice)
 {
-    Require(GetSender()!=Address("0x0000000000000000000000000000000000000000"),"Address is zero");
+    Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
     Require(_exists(tokenId),"Nonexistent token");
 
-    address thistokenOwner=ownerOf(tokenId);
-    Require(thistokenOwner==GetSender(),"It's NOT your token");
+    _owners.key=tokenId;
+    address tokenowner=_owners.value;
+    Require(Equal(tokenowner,GetSender()),"It's NOT your token");
 
     tokens.index=tokenId;
     tokens.value.price=newPrice;

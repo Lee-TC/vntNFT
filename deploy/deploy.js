@@ -101,17 +101,18 @@ function getNonce(account) {
 }
 
 // deployWasmContract();
-contractAddress=getContractAddress("0xc37c9326de932932c09d6c96fba2d086b512dcfe3a5fcdef59dd34bede41936b")['contractAddress'];
+contractAddress=getContractAddress("0xb89f62fba7bb4589427a599439281d4d1a6bd76986079bac318f21fa67c1adbb")['contractAddress'];
+console.log(contractAddress)
 var contract = vnt.core.contract(abi).at(contractAddress);
-// send('mint',["lee",1,'1'],account,getNonce(account));
-// send('mint',["Irving",2,'2'],account,getNonce(account)+1);
-// send('mint',["LeBorn James",23,'3'],account1,getNonce(account1));
-send('mint',["young",11,'6'],account1,getNonce(account1));
-// send('$buyToken',[4],account,getNonce(account),4e18);
+send('mint',["lee",1,'1'],account,getNonce(account));
+send('mint',["Irving",2,'2'],account,getNonce(account)+1);
+send('mint',["LeBorn James",23,'3'],account1,getNonce(account1));
+send('mint',["young",11,'6'],account1,getNonce(account1)+1);
+// // send('$buyToken',[4],account,getNonce(account),4e18);
 // send('changeTokenPrice',[0,6],account,getNonce(account));
-
+// send("mint",["Ben simmons",10,"12"],account,getNonce(account));
 // var result=contract.ownerOf.call(4);
 // console.log(result.toString());
 
-// const tmp=vnt.core.getTransactionReceipt('0xbffa8121a68c9411fa5482395bcb368711e4ad905a90d5cd6806c015773d4218');
-// console.log(a);
+// const tmp=vnt.core.getTransactionReceipt('0xefcb44dfdc0ea83baddfd36cc363c2fe88d40791c7b9c6ebb5c1e39ead034af6');
+// console.log(tmp);
