@@ -9,9 +9,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "ethereumjs-account": "^3.0.0",
     "ethereumjs-common": "^1.5.2",
     "ethereumjs-tx": "^2.1.0",
+    "express": "^4.17.2",
+    "formidable": "^2.0.1",
+    "morgan": "^1.10.0",
     "vnt": "github:educhainchsi/vnt.js",
     "vnt-kit": "github:educhainchsi/vnt-kit.js"
   }

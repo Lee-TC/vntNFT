@@ -1,7 +1,5 @@
 var CommonData = require('./common');
-const account = require("../base/account")
 var Vnt = require("vnt");
-var vntKit = require("vnt-kit");
 var Tx = require("ethereumjs-tx").Transaction;
 let Cm = require("ethereumjs-common").default
 let vnt = new Vnt();

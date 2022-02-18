@@ -16,7 +16,6 @@ function openAccount(file, passwd) {
 }
 
 var account1 = openAccount(ksdir + kfile, password);
-
 var from1 = '0x59b534adc54a79d20d07d379383bbfc8306fe93b';
 var from1Keystore = '{"version":3,"id":"7cf78ea8-ebd1-4fe5-92d9-d77ce6ac9cdb","address":"59b534adc54a79d20d07d379383bbfc8306fe93b","crypto":{"ciphertext":"eb3d5a688144727971ec787d47cc69c69186143845c6c0f759c9efe44d5dd47e","cipherparams":{"iv":"00b054f71bac52fc7bc9b06d01bff5c1"},"cipher":"aes-128-ctr","kdf":"scrypt","kdfparams":{"dklen":32,"salt":"47d818c860f2d6ff6da48087f420b6d1d3fa8330d6bddff2d93ad92631462be5","n":8192,"r":8,"p":1},"mac":"e03638d378bb0c704490252d40310728e90281a4b560b23a8ff4ade4e9da4a27"}}';
 var pass1 = 'zyl7758258';
@@ -101,18 +100,17 @@ function getNonce(account) {
 }
 
 // deployWasmContract();
-contractAddress=getContractAddress("0xb89f62fba7bb4589427a599439281d4d1a6bd76986079bac318f21fa67c1adbb")['contractAddress'];
-console.log(contractAddress)
+contractAddress=getContractAddress("0x9be0551c2177f0afdd0c8941dfdb326350f1b7c76a2d433395c1e69778079867")['contractAddress'];
 var contract = vnt.core.contract(abi).at(contractAddress);
-send('mint',["lee",1,'1'],account,getNonce(account));
-send('mint',["Irving",2,'2'],account,getNonce(account)+1);
-send('mint',["LeBorn James",23,'3'],account1,getNonce(account1));
-send('mint',["young",11,'6'],account1,getNonce(account1)+1);
+// send('mint',["lee",1,'1'],account,getNonce(account));
+// send('mint',["Irving",2,'2'],account,getNonce(account)+1);
+// send('mint',["LeBorn James",23,'3'],account1,getNonce(account1));
+// send('mint',["young",11,'6'],account1,getNonce(account1)+1);
 // // send('$buyToken',[4],account,getNonce(account),4e18);
 // send('changeTokenPrice',[0,6],account,getNonce(account));
 // send("mint",["Ben simmons",10,"12"],account,getNonce(account));
-// var result=contract.ownerOf.call(4);
-// console.log(result.toString());
+var result=contract.getTokenhash.call(3);
+console.log(result.toString());
 
 // const tmp=vnt.core.getTransactionReceipt('0xefcb44dfdc0ea83baddfd36cc363c2fe88d40791c7b9c6ebb5c1e39ead034af6');
 // console.log(tmp);

@@ -230,7 +230,7 @@ uint256 getTokenPrice(int32 tokenId)
 }
 
 UNMUTABLE
-int32 getTokenHash(int32 tokenId)
+string getTokenhash(int32 tokenId)
 {
     tokens.index=tokenId;
     return tokens.value.hash;
@@ -268,7 +268,7 @@ void changeTokenPrice(int32 tokenId,int32 newPrice)
     _owners.key=tokenId;
     address tokenowner=_owners.value;
     Require(Equal(tokenowner,GetSender()),"It's NOT your token");
-
+    //address类型本质是字符串，所以需要使用Equal去比较（坑）
     tokens.index=tokenId;
     tokens.value.price=newPrice;
 

@@ -1,0 +1,38 @@
+<!doctype>
+<html>
+
+<head>
+<script type="text/javascript" src="../node_modules/bignumber.js/bignumber.min.js"></script>
+<script type="text/javascript" src="../dist/vnt-light.js"></script>
+<script type="text/javascript">
+
+    var Vnt = require('vnt');
+    var vnt = new Vnt();
+    vnt.setProvider(new vnt.providers.HttpProvider());
+
+    function watchBalance() {
+        var coinbase = vnt.core.coinbase;
+
+        var originalBalance = vnt.core.getBalance(coinbase).toNumber();
+        document.getElementById('coinbase').innerText = 'coinbase: ' + coinbase;
+        document.getElementById('original').innerText = ' original balance: ' + originalBalance + '    watching...';
+
+        vnt.core.filter('latest').watch(function() {
+            var currentBalance = vnt.core.getBalance(coinbase).toNumber();
+            document.getElementById("current").innerText = 'current: ' + currentBalance;
+            document.getElementById("diff").innerText = 'diff:    ' + (currentBalance - originalBalance);
+        });
+    }
+
+</script>
+</head>
+<body>
+    <h1>coinbase balance</h1>
+    <button type="button" onClick="watchBalance();">watch balance</button>
+    <div></div>
+    <div id="coinbase"></div>
+    <div id="original"></div>
+    <div id="current"></div>
+    <div id="diff"></div>
+</body>
+</html>
