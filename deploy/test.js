@@ -4,14 +4,12 @@ const getTokenPrice = require("./chainFunc/getTokenPrice")
 const getTokenName = require("./chainFunc/getTokenName")
 const ownerOf = require("./chainFunc/ownerOf")
 const getTotalToken = require("./chainFunc/getTotalToken")
-const getTokenHash = require("./chainFunc/getTokenHash")
 const getTransactionReceipt = require("./base/getTransactionReceipt")
 const $buyToken = require("./chainFunc/$buyToken")
-// $buyToken(1,10);
-// console.log(ownerOf(1))
-for(i=0;i<getTotalToken();i++)
+const getTokenHash = require("./chainFunc/getTokenHash")
+for (i=0;i<getTotalToken();i++)
 {
-    console.log(getTokenName(i),getTokenPrice(i),getTokenHash(i))
+    console.log(getTokenName(i),getTokenPrice(i),getTokenHash(i));
 }
 
 

@@ -10,7 +10,6 @@ const bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const Vnt = require('vnt');
-var vntKit = require("vnt-kit")
 const send = require("./base/send");
 const getNonce = require("./base/getNonce");
 
@@ -63,7 +62,8 @@ app.get('/balanceOf',(req, res)=>{
 
 //由管理员审核后上架，用户在确认通过审核通过时，由用户上架
 app.post('/mint',(req, res)=>{
-    if(req.body.name == null || req.body.hash == null || req.body.price == null || req.headers.authorization == null || req.headers.code == null)
+    if(req.body.name == null || req.body.hash == null || req.body.price == null || req.body.address == null
+        || req.headers.authorization == null || req.headers.code == null)
       res.status(400).send({"status":"failed","error":"name,hash,price,address,authorization or code is null"})
     else {
         try{
@@ -74,7 +74,7 @@ app.post('/mint',(req, res)=>{
         }
     }
     try {
-        send("mint",[req.body.name,req.body.price,req.body.hash],account,getNonce(account))
+        send("mint",[req.body.name,int(req.body.price),req.body.hash],account,getNonce(account))
         res.status(200).send({"status":"OK","error":"null"})
     } 
     catch(e){
@@ -104,6 +104,6 @@ app.post('/getReceipt', (req, res) => {
 })
 
 
-app.listen(3002)
+app.listen(3002,"172.19.16.1")
 //控制台提示输出
 console.log('服务器启动成功')
