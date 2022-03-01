@@ -1,4 +1,3 @@
 deploy/node_modules/**
 ks/**
-contract/output/**
 deploy/package-lock.json

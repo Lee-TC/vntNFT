@@ -7,7 +7,7 @@ struct token{
   int32 price;
   string hash;
   string certificate;
-  int32 status;//0是售卖 1是珍藏 2是销毁
+  int32 status;                                  
 };
 
 KEY address tokenowner;
@@ -18,9 +18,52 @@ KEY array(bool) _isexist;
 KEY mapping(address,int32) _balances;
 KEY mapping(int32,address) _tokenApprovals;
 KEY mapping(address,mapping(address,bool)) _operatorApprovals;
-KEY mapping(address,int32) _UserRole;//0是普通用户 1是管理员 2是鉴定机构
+KEY mapping(address,int32) _UserRole;                                                 
 
+
+void key18at7yop(){
+AddKeyInfo( &_isexist.value, 8, &_isexist, 9, false);
+AddKeyInfo( &_isexist.value, 8, &_isexist.index, 4, true);
+AddKeyInfo( &tokenowner, 7, &tokenowner, 9, false);
+AddKeyInfo( &tokens.value.hash, 6, &tokens, 9, false);
+AddKeyInfo( &tokens.value.hash, 6, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.hash, 6, &tokens.value.hash, 9, false);
+AddKeyInfo( &tokens.value.price, 1, &tokens, 9, false);
+AddKeyInfo( &tokens.value.price, 1, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.price, 1, &tokens.value.price, 9, false);
+AddKeyInfo( &tokens.value.status, 1, &tokens, 9, false);
+AddKeyInfo( &tokens.value.status, 1, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.status, 1, &tokens.value.status, 9, false);
+AddKeyInfo( &_isexist.length, 4, &_isexist, 9, false);
+AddKeyInfo( &tokens.length, 4, &tokens, 9, false);
+AddKeyInfo( &_UserRole.value, 1, &_UserRole, 9, false);
+AddKeyInfo( &_UserRole.value, 1, &_UserRole.key, 7, false);
+AddKeyInfo( &tokens.value.name, 6, &tokens, 9, false);
+AddKeyInfo( &tokens.value.name, 6, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.name, 6, &tokens.value.name, 9, false);
+AddKeyInfo( &_balances.value, 1, &_balances, 9, false);
+AddKeyInfo( &_balances.value, 1, &_balances.key, 7, false);
+AddKeyInfo( &tokens.value.owner, 7, &tokens, 9, false);
+AddKeyInfo( &tokens.value.owner, 7, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.owner, 7, &tokens.value.owner, 9, false);
+AddKeyInfo( &tokens.value.tokenId, 1, &tokens, 9, false);
+AddKeyInfo( &tokens.value.tokenId, 1, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.tokenId, 1, &tokens.value.tokenId, 9, false);
+AddKeyInfo( &tokencounter, 1, &tokencounter, 9, false);
+AddKeyInfo( &_owners.value, 7, &_owners, 9, false);
+AddKeyInfo( &_owners.value, 7, &_owners.key, 1, false);
+AddKeyInfo( &tokens.value.certificate, 6, &tokens, 9, false);
+AddKeyInfo( &tokens.value.certificate, 6, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.certificate, 6, &tokens.value.certificate, 9, false);
+AddKeyInfo( &_tokenApprovals.value, 7, &_tokenApprovals, 9, false);
+AddKeyInfo( &_tokenApprovals.value, 7, &_tokenApprovals.key, 1, false);
+AddKeyInfo( &_operatorApprovals.value.value, 8, &_operatorApprovals, 9, false);
+AddKeyInfo( &_operatorApprovals.value.value, 8, &_operatorApprovals.key, 7, false);
+AddKeyInfo( &_operatorApprovals.value.value, 8, &_operatorApprovals.value.key, 7, false);
+}
 constructor ERC721() {
+key18at7yop();
+InitializeVariables();
     tokenowner=GetSender();
     _UserRole.key=GetSender();
     _UserRole.value=1;
@@ -47,10 +90,11 @@ void buyToken(int32 tokenId);
 void changeTokenPrice(int32 tokenId,int32 newPrice);
 int32 totaltoken();
 
-//标准ERC-721代币合约
+                           
 UNMUTABLE
 int32 balanceOf(address owner)
 {
+key18at7yop();
     _balances.key=owner;
     return _balances.value;
 }
@@ -58,6 +102,7 @@ int32 balanceOf(address owner)
 UNMUTABLE
 address ownerOf(int32 tokenId)
 {
+key18at7yop();
     Require(_exists(tokenId),"nonexistent token");
     _owners.key=tokenId;
     address owner=_owners.value;
@@ -95,7 +140,7 @@ bool isApprovedForAll(address owner,address operator)
 
 void transferFrom(address from,address to,int32 tokenId)
 {
-    // Require(_isApprovedOrOwner(GetSender(),tokenId),"transfer caller is not owner or approved");
+                                                                                                   
     _transfer(from,to,tokenId);
 }
 
@@ -138,11 +183,11 @@ void _transfer(address from,address to,int32 tokenId)
 {
     _owners.key=tokenId;
     address owner=_owners.value;
-    // Require(owner==from,"transfer from incorrect owner");
+                                                            
     Require(!Equal(to,Address("0x0000000000000000000000000000000000000000")),"transfer to the zero address");
     
-    //Clear approvals from the previous owner
-    // _approve(Address("0x0000000000000000000000000000000000000000"),tokenId);
+                                             
+                                                                               
     _balances.key=from;
     _balances.value-=1;
 
@@ -190,11 +235,12 @@ bool _isApprovedOrOwner(address spender,int32 tokenId)
 }
 
 
-//合约主体
+              
 
 MUTABLE
 void setRole(address User,int32 Role)
 {
+key18at7yop();
     _UserRole.key=GetSender();
     Require(_UserRole.value==1,"You are NOT the Admin");
 
@@ -205,6 +251,7 @@ void setRole(address User,int32 Role)
 UNMUTABLE
 int32 getRole(address User)
 {
+key18at7yop();
     Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
     _UserRole.key=User;
     return _UserRole.value;
@@ -213,6 +260,7 @@ int32 getRole(address User)
 MUTABLE
 void mint(string name,int32 price,string hash)
 {
+key18at7yop();
     Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
 
     _mint(GetSender(),tokencounter);
@@ -236,12 +284,14 @@ void mint(string name,int32 price,string hash)
 UNMUTABLE
 int32 totaltoken()
 {
+key18at7yop();
     return tokencounter;
 }
 
 UNMUTABLE
 string getTokenName(int32 tokenId)
 {
+key18at7yop();
     tokens.index=tokenId;
     return tokens.value.name;
 }
@@ -249,6 +299,7 @@ string getTokenName(int32 tokenId)
 UNMUTABLE
 uint256 getTokenPrice(int32 tokenId)
 {
+key18at7yop();
     tokens.index=tokenId;
     return U256FromI64(tokens.value.price);
 }
@@ -256,29 +307,17 @@ uint256 getTokenPrice(int32 tokenId)
 UNMUTABLE
 string getTokenhash(int32 tokenId)
 {
+key18at7yop();
     tokens.index=tokenId;
     return tokens.value.hash;
-}
-
-UNMUTABLE
-string getTokenCerti(int32 tokenId)
-{
-    tokens.index=tokenId;
-    return tokens.value.certificate;
-}
-
-UNMUTABLE
-int32 getTokenStatus(int32 tokenId)
-{
-    tokens.index=tokenId;
-    return tokens.value.status;
 }
 
 MUTABLE
 void $buyToken(int32 tokenId)
 {
+key18at7yop();
     Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
-    // Require(_exists(tokenId),"nonexistent token");
+                                                     
 
     address tokenOriginOwner=ownerOf(tokenId);
     Require(!Equal(tokenOriginOwner,Address("0x0000000000000000000000000000000000000000")),"token's owner should not be an zero address account");
@@ -291,9 +330,9 @@ void $buyToken(int32 tokenId)
     Require(U256_Cmp(GetValue(),U256FromI64(thisprice))>=0,"You don't have enough money");
     
     transferFrom(tokenOriginOwner,GetSender(),tokenId);
-    //必须先向合约转账，使合约有余额，之后再让合约向地址转账
+                                                                                       
     SendFromContract(GetContractAddress(),GetValue());
-    //转账成功之后，必须等到下一次交易，余额才会发生改变！！
+                                                                                       
     SendFromContract(tokenOriginOwner,GetValue());
     tokens.index=tokenId;
     tokens.value.owner=GetSender();
@@ -302,46 +341,50 @@ void $buyToken(int32 tokenId)
 MUTABLE
 void changeTokenPrice(int32 tokenId,int32 newPrice)
 {
+key18at7yop();
     Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
     Require(_exists(tokenId),"Nonexistent token");
 
     _owners.key=tokenId;
     address tokenowner=_owners.value;
     Require(Equal(tokenowner,GetSender()),"It's NOT your token");
-    //address类型本质是字符串，所以需要使用Equal去比较（坑）
+                                                                                 
     tokens.index=tokenId;
     tokens.value.price=newPrice;
 }
 
 
-//以下为管理员功能
+                          
 MUTABLE
 void changeTokenStatus(int32 tokenId,int32 newStatus)
 {
+key18at7yop();
     Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
     Require(_exists(tokenId),"Nonexistent token");
 
     _UserRole.key=GetSender();
     Require(_UserRole.value==1,"You are NOT the Admin");
 
-    //address类型本质是字符串，所以需要使用Equal去比较（坑）
+                                                                                 
     tokens.index=tokenId;
     tokens.value.status=newStatus;
 }
 
-//以下为鉴定机构的功能
+                                
 MUTABLE
 void IssueCerti(int32 tokenId,string Certifi)
 {
+key18at7yop();
     Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
     Require(_exists(tokenId),"Nonexistent token");
 
     _UserRole.key=GetSender();
     Require(_UserRole.value==2,"你无权颁发证书");
-    //address类型本质是字符串，所以需要使用Equal去比较（坑）
+                                                                                 
 
     tokens.index=tokenId;
     tokens.value.certificate=Certifi;
 }
-//fallback方法，因为有向合约转账的函数，故必须添加fallback函数
-$_() {}
+                                                                                    
+$_() {
+key18at7yop();}

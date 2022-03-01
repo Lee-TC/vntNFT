@@ -1,7 +1,7 @@
 var fs = require("fs")
 var vntkit = require("vnt-kit")
 
-var ksdir="../../ks/";
+var ksdir="../ks/";
 var kfile="Wed, 22 Dec 2021 11_51_40 GMT";
 var password="vnt123456";
 
