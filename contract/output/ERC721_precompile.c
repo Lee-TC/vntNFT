@@ -21,48 +21,48 @@ KEY mapping(address,mapping(address,bool)) _operatorApprovals;
 KEY mapping(address,int32) _UserRole;                                                 
 
 
-void key18at7yop(){
-AddKeyInfo( &_isexist.value, 8, &_isexist, 9, false);
-AddKeyInfo( &_isexist.value, 8, &_isexist.index, 4, true);
-AddKeyInfo( &tokenowner, 7, &tokenowner, 9, false);
-AddKeyInfo( &tokens.value.hash, 6, &tokens, 9, false);
-AddKeyInfo( &tokens.value.hash, 6, &tokens.index, 4, true);
-AddKeyInfo( &tokens.value.hash, 6, &tokens.value.hash, 9, false);
-AddKeyInfo( &tokens.value.price, 1, &tokens, 9, false);
-AddKeyInfo( &tokens.value.price, 1, &tokens.index, 4, true);
-AddKeyInfo( &tokens.value.price, 1, &tokens.value.price, 9, false);
-AddKeyInfo( &tokens.value.status, 1, &tokens, 9, false);
-AddKeyInfo( &tokens.value.status, 1, &tokens.index, 4, true);
-AddKeyInfo( &tokens.value.status, 1, &tokens.value.status, 9, false);
-AddKeyInfo( &_isexist.length, 4, &_isexist, 9, false);
-AddKeyInfo( &tokens.length, 4, &tokens, 9, false);
-AddKeyInfo( &_UserRole.value, 1, &_UserRole, 9, false);
-AddKeyInfo( &_UserRole.value, 1, &_UserRole.key, 7, false);
+void keyjkyu29mx(){
 AddKeyInfo( &tokens.value.name, 6, &tokens, 9, false);
 AddKeyInfo( &tokens.value.name, 6, &tokens.index, 4, true);
 AddKeyInfo( &tokens.value.name, 6, &tokens.value.name, 9, false);
-AddKeyInfo( &_balances.value, 1, &_balances, 9, false);
-AddKeyInfo( &_balances.value, 1, &_balances.key, 7, false);
-AddKeyInfo( &tokens.value.owner, 7, &tokens, 9, false);
-AddKeyInfo( &tokens.value.owner, 7, &tokens.index, 4, true);
-AddKeyInfo( &tokens.value.owner, 7, &tokens.value.owner, 9, false);
 AddKeyInfo( &tokens.value.tokenId, 1, &tokens, 9, false);
 AddKeyInfo( &tokens.value.tokenId, 1, &tokens.index, 4, true);
 AddKeyInfo( &tokens.value.tokenId, 1, &tokens.value.tokenId, 9, false);
-AddKeyInfo( &tokencounter, 1, &tokencounter, 9, false);
-AddKeyInfo( &_owners.value, 7, &_owners, 9, false);
-AddKeyInfo( &_owners.value, 7, &_owners.key, 1, false);
+AddKeyInfo( &_isexist.value, 8, &_isexist, 9, false);
+AddKeyInfo( &_isexist.value, 8, &_isexist.index, 4, true);
 AddKeyInfo( &tokens.value.certificate, 6, &tokens, 9, false);
 AddKeyInfo( &tokens.value.certificate, 6, &tokens.index, 4, true);
 AddKeyInfo( &tokens.value.certificate, 6, &tokens.value.certificate, 9, false);
-AddKeyInfo( &_tokenApprovals.value, 7, &_tokenApprovals, 9, false);
-AddKeyInfo( &_tokenApprovals.value, 7, &_tokenApprovals.key, 1, false);
+AddKeyInfo( &tokens.value.hash, 6, &tokens, 9, false);
+AddKeyInfo( &tokens.value.hash, 6, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.hash, 6, &tokens.value.hash, 9, false);
+AddKeyInfo( &_owners.value, 7, &_owners, 9, false);
+AddKeyInfo( &_owners.value, 7, &_owners.key, 1, false);
+AddKeyInfo( &_isexist.length, 4, &_isexist, 9, false);
+AddKeyInfo( &tokens.value.status, 1, &tokens, 9, false);
+AddKeyInfo( &tokens.value.status, 1, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.status, 1, &tokens.value.status, 9, false);
+AddKeyInfo( &_UserRole.value, 1, &_UserRole, 9, false);
+AddKeyInfo( &_UserRole.value, 1, &_UserRole.key, 7, false);
+AddKeyInfo( &tokencounter, 1, &tokencounter, 9, false);
+AddKeyInfo( &tokenowner, 7, &tokenowner, 9, false);
+AddKeyInfo( &tokens.value.owner, 7, &tokens, 9, false);
+AddKeyInfo( &tokens.value.owner, 7, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.owner, 7, &tokens.value.owner, 9, false);
+AddKeyInfo( &tokens.length, 4, &tokens, 9, false);
+AddKeyInfo( &_balances.value, 1, &_balances, 9, false);
+AddKeyInfo( &_balances.value, 1, &_balances.key, 7, false);
 AddKeyInfo( &_operatorApprovals.value.value, 8, &_operatorApprovals, 9, false);
 AddKeyInfo( &_operatorApprovals.value.value, 8, &_operatorApprovals.key, 7, false);
 AddKeyInfo( &_operatorApprovals.value.value, 8, &_operatorApprovals.value.key, 7, false);
+AddKeyInfo( &tokens.value.price, 1, &tokens, 9, false);
+AddKeyInfo( &tokens.value.price, 1, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.price, 1, &tokens.value.price, 9, false);
+AddKeyInfo( &_tokenApprovals.value, 7, &_tokenApprovals, 9, false);
+AddKeyInfo( &_tokenApprovals.value, 7, &_tokenApprovals.key, 1, false);
 }
 constructor ERC721() {
-key18at7yop();
+keyjkyu29mx();
 InitializeVariables();
     tokenowner=GetSender();
     _UserRole.key=GetSender();
@@ -94,7 +94,7 @@ int32 totaltoken();
 UNMUTABLE
 int32 balanceOf(address owner)
 {
-key18at7yop();
+keyjkyu29mx();
     _balances.key=owner;
     return _balances.value;
 }
@@ -102,7 +102,7 @@ key18at7yop();
 UNMUTABLE
 address ownerOf(int32 tokenId)
 {
-key18at7yop();
+keyjkyu29mx();
     Require(_exists(tokenId),"nonexistent token");
     _owners.key=tokenId;
     address owner=_owners.value;
@@ -240,7 +240,7 @@ bool _isApprovedOrOwner(address spender,int32 tokenId)
 MUTABLE
 void setRole(address User,int32 Role)
 {
-key18at7yop();
+keyjkyu29mx();
     _UserRole.key=GetSender();
     Require(_UserRole.value==1,"You are NOT the Admin");
 
@@ -251,7 +251,7 @@ key18at7yop();
 UNMUTABLE
 int32 getRole(address User)
 {
-key18at7yop();
+keyjkyu29mx();
     Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
     _UserRole.key=User;
     return _UserRole.value;
@@ -260,7 +260,7 @@ key18at7yop();
 MUTABLE
 void mint(string name,int32 price,string hash)
 {
-key18at7yop();
+keyjkyu29mx();
     Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
 
     _mint(GetSender(),tokencounter);
@@ -284,14 +284,14 @@ key18at7yop();
 UNMUTABLE
 int32 totaltoken()
 {
-key18at7yop();
+keyjkyu29mx();
     return tokencounter;
 }
 
 UNMUTABLE
 string getTokenName(int32 tokenId)
 {
-key18at7yop();
+keyjkyu29mx();
     tokens.index=tokenId;
     return tokens.value.name;
 }
@@ -299,7 +299,7 @@ key18at7yop();
 UNMUTABLE
 uint256 getTokenPrice(int32 tokenId)
 {
-key18at7yop();
+keyjkyu29mx();
     tokens.index=tokenId;
     return U256FromI64(tokens.value.price);
 }
@@ -307,15 +307,31 @@ key18at7yop();
 UNMUTABLE
 string getTokenhash(int32 tokenId)
 {
-key18at7yop();
+keyjkyu29mx();
     tokens.index=tokenId;
     return tokens.value.hash;
+}
+
+UNMUTABLE
+string getTokenCerti(int32 tokenId)
+{
+keyjkyu29mx();
+    tokens.index=tokenId;
+    return tokens.value.certificate;
+}
+
+UNMUTABLE
+int32 getTokenStatus(int32 tokenId)
+{
+keyjkyu29mx();
+    tokens.index=tokenId;
+    return tokens.value.status;
 }
 
 MUTABLE
 void $buyToken(int32 tokenId)
 {
-key18at7yop();
+keyjkyu29mx();
     Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
                                                      
 
@@ -341,7 +357,7 @@ key18at7yop();
 MUTABLE
 void changeTokenPrice(int32 tokenId,int32 newPrice)
 {
-key18at7yop();
+keyjkyu29mx();
     Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
     Require(_exists(tokenId),"Nonexistent token");
 
@@ -358,7 +374,7 @@ key18at7yop();
 MUTABLE
 void changeTokenStatus(int32 tokenId,int32 newStatus)
 {
-key18at7yop();
+keyjkyu29mx();
     Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
     Require(_exists(tokenId),"Nonexistent token");
 
@@ -374,7 +390,7 @@ key18at7yop();
 MUTABLE
 void IssueCerti(int32 tokenId,string Certifi)
 {
-key18at7yop();
+keyjkyu29mx();
     Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
     Require(_exists(tokenId),"Nonexistent token");
 
@@ -387,4 +403,4 @@ key18at7yop();
 }
                                                                                     
 $_() {
-key18at7yop();}
+keyjkyu29mx();}
