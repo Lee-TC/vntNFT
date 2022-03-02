@@ -6,6 +6,8 @@ struct token{
   address owner;
   int32 price;
   string hash;
+  string certificate;
+  int32 status;                                  
 };
 
 KEY address tokenowner;
@@ -16,44 +18,55 @@ KEY array(bool) _isexist;
 KEY mapping(address,int32) _balances;
 KEY mapping(int32,address) _tokenApprovals;
 KEY mapping(address,mapping(address,bool)) _operatorApprovals;
+KEY mapping(address,int32) _UserRole;                                                 
 
 
-void keyves7uxyl(){
-AddKeyInfo( &tokens.value.price, 1, &tokens, 9, false);
-AddKeyInfo( &tokens.value.price, 1, &tokens.index, 4, true);
-AddKeyInfo( &tokens.value.price, 1, &tokens.value.price, 9, false);
-AddKeyInfo( &tokens.value.name, 6, &tokens, 9, false);
-AddKeyInfo( &tokens.value.name, 6, &tokens.index, 4, true);
-AddKeyInfo( &tokens.value.name, 6, &tokens.value.name, 9, false);
-AddKeyInfo( &tokencounter, 1, &tokencounter, 9, false);
-AddKeyInfo( &_balances.value, 1, &_balances, 9, false);
-AddKeyInfo( &_balances.value, 1, &_balances.key, 7, false);
-AddKeyInfo( &_tokenApprovals.value, 7, &_tokenApprovals, 9, false);
-AddKeyInfo( &_tokenApprovals.value, 7, &_tokenApprovals.key, 1, false);
-AddKeyInfo( &tokens.value.owner, 7, &tokens, 9, false);
-AddKeyInfo( &tokens.value.owner, 7, &tokens.index, 4, true);
-AddKeyInfo( &tokens.value.owner, 7, &tokens.value.owner, 9, false);
+void key18at7yop(){
+AddKeyInfo( &_isexist.value, 8, &_isexist, 9, false);
+AddKeyInfo( &_isexist.value, 8, &_isexist.index, 4, true);
+AddKeyInfo( &tokenowner, 7, &tokenowner, 9, false);
 AddKeyInfo( &tokens.value.hash, 6, &tokens, 9, false);
 AddKeyInfo( &tokens.value.hash, 6, &tokens.index, 4, true);
 AddKeyInfo( &tokens.value.hash, 6, &tokens.value.hash, 9, false);
-AddKeyInfo( &_operatorApprovals.value.value, 8, &_operatorApprovals, 9, false);
-AddKeyInfo( &_operatorApprovals.value.value, 8, &_operatorApprovals.key, 7, false);
-AddKeyInfo( &_operatorApprovals.value.value, 8, &_operatorApprovals.value.key, 7, false);
-AddKeyInfo( &tokenowner, 7, &tokenowner, 9, false);
-AddKeyInfo( &_isexist.value, 8, &_isexist, 9, false);
-AddKeyInfo( &_isexist.value, 8, &_isexist.index, 4, true);
-AddKeyInfo( &tokens.length, 4, &tokens, 9, false);
-AddKeyInfo( &_owners.value, 7, &_owners, 9, false);
-AddKeyInfo( &_owners.value, 7, &_owners.key, 1, false);
+AddKeyInfo( &tokens.value.price, 1, &tokens, 9, false);
+AddKeyInfo( &tokens.value.price, 1, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.price, 1, &tokens.value.price, 9, false);
+AddKeyInfo( &tokens.value.status, 1, &tokens, 9, false);
+AddKeyInfo( &tokens.value.status, 1, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.status, 1, &tokens.value.status, 9, false);
 AddKeyInfo( &_isexist.length, 4, &_isexist, 9, false);
+AddKeyInfo( &tokens.length, 4, &tokens, 9, false);
+AddKeyInfo( &_UserRole.value, 1, &_UserRole, 9, false);
+AddKeyInfo( &_UserRole.value, 1, &_UserRole.key, 7, false);
+AddKeyInfo( &tokens.value.name, 6, &tokens, 9, false);
+AddKeyInfo( &tokens.value.name, 6, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.name, 6, &tokens.value.name, 9, false);
+AddKeyInfo( &_balances.value, 1, &_balances, 9, false);
+AddKeyInfo( &_balances.value, 1, &_balances.key, 7, false);
+AddKeyInfo( &tokens.value.owner, 7, &tokens, 9, false);
+AddKeyInfo( &tokens.value.owner, 7, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.owner, 7, &tokens.value.owner, 9, false);
 AddKeyInfo( &tokens.value.tokenId, 1, &tokens, 9, false);
 AddKeyInfo( &tokens.value.tokenId, 1, &tokens.index, 4, true);
 AddKeyInfo( &tokens.value.tokenId, 1, &tokens.value.tokenId, 9, false);
+AddKeyInfo( &tokencounter, 1, &tokencounter, 9, false);
+AddKeyInfo( &_owners.value, 7, &_owners, 9, false);
+AddKeyInfo( &_owners.value, 7, &_owners.key, 1, false);
+AddKeyInfo( &tokens.value.certificate, 6, &tokens, 9, false);
+AddKeyInfo( &tokens.value.certificate, 6, &tokens.index, 4, true);
+AddKeyInfo( &tokens.value.certificate, 6, &tokens.value.certificate, 9, false);
+AddKeyInfo( &_tokenApprovals.value, 7, &_tokenApprovals, 9, false);
+AddKeyInfo( &_tokenApprovals.value, 7, &_tokenApprovals.key, 1, false);
+AddKeyInfo( &_operatorApprovals.value.value, 8, &_operatorApprovals, 9, false);
+AddKeyInfo( &_operatorApprovals.value.value, 8, &_operatorApprovals.key, 7, false);
+AddKeyInfo( &_operatorApprovals.value.value, 8, &_operatorApprovals.value.key, 7, false);
 }
 constructor ERC721() {
-keyves7uxyl();
+key18at7yop();
 InitializeVariables();
     tokenowner=GetSender();
+    _UserRole.key=GetSender();
+    _UserRole.value=1;
     tokens.length=0;
     _isexist.length=0;
 }
@@ -81,7 +94,7 @@ int32 totaltoken();
 UNMUTABLE
 int32 balanceOf(address owner)
 {
-keyves7uxyl();
+key18at7yop();
     _balances.key=owner;
     return _balances.value;
 }
@@ -89,7 +102,7 @@ keyves7uxyl();
 UNMUTABLE
 address ownerOf(int32 tokenId)
 {
-keyves7uxyl();
+key18at7yop();
     Require(_exists(tokenId),"nonexistent token");
     _owners.key=tokenId;
     address owner=_owners.value;
@@ -224,11 +237,30 @@ bool _isApprovedOrOwner(address spender,int32 tokenId)
 
               
 
+MUTABLE
+void setRole(address User,int32 Role)
+{
+key18at7yop();
+    _UserRole.key=GetSender();
+    Require(_UserRole.value==1,"You are NOT the Admin");
+
+    _UserRole.key=User;
+    _UserRole.value=Role;
+}
+
+UNMUTABLE
+int32 getRole(address User)
+{
+key18at7yop();
+    Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
+    _UserRole.key=User;
+    return _UserRole.value;
+}
 
 MUTABLE
 void mint(string name,int32 price,string hash)
 {
-keyves7uxyl();
+key18at7yop();
     Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
 
     _mint(GetSender(),tokencounter);
@@ -239,6 +271,8 @@ keyves7uxyl();
     newtoken.owner=GetSender();
     newtoken.hash=hash;
     newtoken.tokenId=tokencounter;
+    newtoken.certificate="0";
+    newtoken.status=0;
 
     tokens.length+=1;
     tokens.index=tokens.length-1;
@@ -250,14 +284,14 @@ keyves7uxyl();
 UNMUTABLE
 int32 totaltoken()
 {
-keyves7uxyl();
+key18at7yop();
     return tokencounter;
 }
 
 UNMUTABLE
 string getTokenName(int32 tokenId)
 {
-keyves7uxyl();
+key18at7yop();
     tokens.index=tokenId;
     return tokens.value.name;
 }
@@ -265,7 +299,7 @@ keyves7uxyl();
 UNMUTABLE
 uint256 getTokenPrice(int32 tokenId)
 {
-keyves7uxyl();
+key18at7yop();
     tokens.index=tokenId;
     return U256FromI64(tokens.value.price);
 }
@@ -273,7 +307,7 @@ keyves7uxyl();
 UNMUTABLE
 string getTokenhash(int32 tokenId)
 {
-keyves7uxyl();
+key18at7yop();
     tokens.index=tokenId;
     return tokens.value.hash;
 }
@@ -281,16 +315,18 @@ keyves7uxyl();
 MUTABLE
 void $buyToken(int32 tokenId)
 {
-keyves7uxyl();
+key18at7yop();
     Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
                                                      
 
     address tokenOriginOwner=ownerOf(tokenId);
     Require(!Equal(tokenOriginOwner,Address("0x0000000000000000000000000000000000000000")),"token's owner should not be an zero address account");
     Require(!Equal(tokenOriginOwner,GetSender()),"the token should not be the token's owner");
-
     tokens.index=tokenId;
     int32 thisprice=tokens.value.price;
+    int32 thisstatus=tokens.value.status;
+    Require(thisstatus==0,"This Token isn't for sale!");
+
     Require(U256_Cmp(GetValue(),U256FromI64(thisprice))>=0,"You don't have enough money");
     
     transferFrom(tokenOriginOwner,GetSender(),tokenId);
@@ -305,7 +341,7 @@ keyves7uxyl();
 MUTABLE
 void changeTokenPrice(int32 tokenId,int32 newPrice)
 {
-keyves7uxyl();
+key18at7yop();
     Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
     Require(_exists(tokenId),"Nonexistent token");
 
@@ -315,8 +351,40 @@ keyves7uxyl();
                                                                                  
     tokens.index=tokenId;
     tokens.value.price=newPrice;
+}
 
+
+                          
+MUTABLE
+void changeTokenStatus(int32 tokenId,int32 newStatus)
+{
+key18at7yop();
+    Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
+    Require(_exists(tokenId),"Nonexistent token");
+
+    _UserRole.key=GetSender();
+    Require(_UserRole.value==1,"You are NOT the Admin");
+
+                                                                                 
+    tokens.index=tokenId;
+    tokens.value.status=newStatus;
+}
+
+                                
+MUTABLE
+void IssueCerti(int32 tokenId,string Certifi)
+{
+key18at7yop();
+    Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
+    Require(_exists(tokenId),"Nonexistent token");
+
+    _UserRole.key=GetSender();
+    Require(_UserRole.value==2,"你无权颁发证书");
+                                                                                 
+
+    tokens.index=tokenId;
+    tokens.value.certificate=Certifi;
 }
                                                                                     
 $_() {
-keyves7uxyl();}
+key18at7yop();}

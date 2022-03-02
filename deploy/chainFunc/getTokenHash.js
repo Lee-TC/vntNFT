@@ -10,7 +10,7 @@ const gH = (tokenId) => {
     let contract = vnt.core.contract(abi).at(CommonData.cAddr);
     let result;
     try {
-        result = contract.getTokenhash.call(tokenId);
+        result = contract.getTokenHash.call(tokenId);
     }
     catch (e) {
         result = "未知错误";

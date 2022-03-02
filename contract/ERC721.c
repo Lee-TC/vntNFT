@@ -6,6 +6,8 @@ struct token{
   address owner;
   int32 price;
   string hash;
+  string certificate;
+  int32 status;//0是售卖 1是珍藏 2是销毁
 };
 
 KEY address tokenowner;
@@ -16,9 +18,12 @@ KEY array(bool) _isexist;
 KEY mapping(address,int32) _balances;
 KEY mapping(int32,address) _tokenApprovals;
 KEY mapping(address,mapping(address,bool)) _operatorApprovals;
+KEY mapping(address,int32) _UserRole;//0是普通用户 1是管理员 2是鉴定机构
 
 constructor ERC721() {
     tokenowner=GetSender();
+    _UserRole.key=GetSender();
+    _UserRole.value=1;
     tokens.length=0;
     _isexist.length=0;
 }
@@ -187,6 +192,23 @@ bool _isApprovedOrOwner(address spender,int32 tokenId)
 
 //合约主体
 
+MUTABLE
+void setRole(address User,int32 Role)
+{
+    _UserRole.key=GetSender();
+    Require(_UserRole.value==1,"You are NOT the Admin");
+
+    _UserRole.key=User;
+    _UserRole.value=Role;
+}
+
+UNMUTABLE
+int32 getRole(address User)
+{
+    Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
+    _UserRole.key=User;
+    return _UserRole.value;
+}
 
 MUTABLE
 void mint(string name,int32 price,string hash)
@@ -201,6 +223,8 @@ void mint(string name,int32 price,string hash)
     newtoken.owner=GetSender();
     newtoken.hash=hash;
     newtoken.tokenId=tokencounter;
+    newtoken.certificate="0";
+    newtoken.status=0;
 
     tokens.length+=1;
     tokens.index=tokens.length-1;
@@ -236,6 +260,20 @@ string getTokenhash(int32 tokenId)
     return tokens.value.hash;
 }
 
+UNMUTABLE
+string getTokenCerti(int32 tokenId)
+{
+    tokens.index=tokenId;
+    return tokens.value.certificate;
+}
+
+UNMUTABLE
+int32 getTokenStatus(int32 tokenId)
+{
+    tokens.index=tokenId;
+    return tokens.value.status;
+}
+
 MUTABLE
 void $buyToken(int32 tokenId)
 {
@@ -245,9 +283,11 @@ void $buyToken(int32 tokenId)
     address tokenOriginOwner=ownerOf(tokenId);
     Require(!Equal(tokenOriginOwner,Address("0x0000000000000000000000000000000000000000")),"token's owner should not be an zero address account");
     Require(!Equal(tokenOriginOwner,GetSender()),"the token should not be the token's owner");
-
     tokens.index=tokenId;
     int32 thisprice=tokens.value.price;
+    int32 thisstatus=tokens.value.status;
+    Require(thisstatus==0,"This Token isn't for sale!");
+
     Require(U256_Cmp(GetValue(),U256FromI64(thisprice))>=0,"You don't have enough money");
     
     transferFrom(tokenOriginOwner,GetSender(),tokenId);
@@ -271,7 +311,37 @@ void changeTokenPrice(int32 tokenId,int32 newPrice)
     //address类型本质是字符串，所以需要使用Equal去比较（坑）
     tokens.index=tokenId;
     tokens.value.price=newPrice;
+}
 
+
+//以下为管理员功能
+MUTABLE
+void changeTokenStatus(int32 tokenId,int32 newStatus)
+{
+    Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
+    Require(_exists(tokenId),"Nonexistent token");
+
+    _UserRole.key=GetSender();
+    Require(_UserRole.value==1,"You are NOT the Admin");
+
+    //address类型本质是字符串，所以需要使用Equal去比较（坑）
+    tokens.index=tokenId;
+    tokens.value.status=newStatus;
+}
+
+//以下为鉴定机构的功能
+MUTABLE
+void IssueCerti(int32 tokenId,string Certifi)
+{
+    Require(!Equal(GetSender(),Address("0x0000000000000000000000000000000000000000")),"Address is zero");
+    Require(_exists(tokenId),"Nonexistent token");
+
+    _UserRole.key=GetSender();
+    Require(_UserRole.value==2,"你无权颁发证书");
+    //address类型本质是字符串，所以需要使用Equal去比较（坑）
+
+    tokens.index=tokenId;
+    tokens.value.certificate=Certifi;
 }
 //fallback方法，因为有向合约转账的函数，故必须添加fallback函数
 $_() {}
