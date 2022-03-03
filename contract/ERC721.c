@@ -223,7 +223,6 @@ void mint(string name,int32 price,string hash)
     newtoken.owner=GetSender();
     newtoken.hash=hash;
     newtoken.tokenId=tokencounter;
-    newtoken.certificate="0";
     newtoken.status=0;
 
     tokens.length+=1;
