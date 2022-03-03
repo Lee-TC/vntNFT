@@ -6,11 +6,11 @@ let vnt = new Vnt();
 const abi = JSON.parse(CommonData.abi);
 vnt.setProvider(new vnt.providers.HttpProvider(CommonData.url));
 
-const gH = (tokenId) => {
+const gS = (tokenId) => {
     let contract = vnt.core.contract(abi).at(CommonData.cAddr);
     let result;
     try {
-        result = contract.getTokenhash.call(tokenId);
+        result = contract.getTokenStatus.call(tokenId);
     }
     catch (e) {
         result = "未知错误";
@@ -18,9 +18,9 @@ const gH = (tokenId) => {
     return result.toString();
 }
 
-const getTokenHash = (tokenId) => {
+const getTokenStatus = (tokenId) => {
     return (() => {
-        return gH(tokenId)
+        return gS(tokenId)
     }).call()
 }
-module.exports = getTokenHash
+module.exports = getTokenStatus

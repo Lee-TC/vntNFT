@@ -107,14 +107,14 @@ var contract = vnt.core.contract(abi).at(contractAddress);
 // send('mint',["lee",1,'0x01'],account,getNonce(account));
 // send('mint',["Irving",2,'0x02'],account,getNonce(account)+1);
 // send('mint',["LeBorn James",23,'0x03'],account1,getNonce(account1));
+// send("setRole",[account1.address,2],account,getNonce(account));
 // send('mint',["young",11,'0x04'],account1,getNonce(account1)+1);
 // // send('$buyToken',[4],account,getNonce(account),4e18);
 // send('changeTokenPrice',[0,6],account,getNonce(account));
-// send("mint",["Ben simmons",10,"abcd"],account,getNonce(account));
-// send("setRole",[])
+// send("mint",["Ben simmons",10,"abcd"],ac  count,getNonce(account));
 // send("changeTokenStatus",[1,1],account,getNonce(account))
-// var result=contract.getRole.call(account1.address);
-// console.log(result.toString());
+var result=contract.getTokenCerti.call(0);
+console.log(result);
 
-const tmp=vnt.core.getTransactionReceipt('0x15a41efdc4f9e6577609a8fdf9be61ec8128909c9d9a34ce65c65c815f323304');
-console.log(tmp);
+// const tmp=vnt.core.getTransactionReceipt('0x15a41efdc4f9e6577609a8fdf9be61ec8128909c9d9a34ce65c65c815f323304');
+// console.log(tmp);

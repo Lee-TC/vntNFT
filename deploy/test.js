@@ -7,9 +7,12 @@ const getTotalToken = require("./chainFunc/getTotalToken")
 const getTransactionReceipt = require("./base/getTransactionReceipt")
 const $buyToken = require("./chainFunc/$buyToken")
 const getTokenHash = require("./chainFunc/getTokenHash")
-for (i=0;i<getTotalToken();i++)
-{
-    console.log(getTokenName(i),getTokenPrice(i),getTokenHash(i));
-}
+const getTokenStatus = require("./chainFunc/getTokenStatus")
+const IssueCerti = require("./chainFunc/IssueCerti")
+IssueCerti(1)
+// for (i=0;i<getTotalToken();i++)
+// {
+//     console.log(getTokenName(i),getTokenPrice(i),getTokenStatus(i));
+// }
 
 
