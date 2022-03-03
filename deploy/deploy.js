@@ -101,7 +101,7 @@ function getNonce(account) {
 }
 
 // deployWasmContract();
-contractAddress=getContractAddress("0x1240b55c2378a4f534614483f441c9458a97186b0286212e920f71ed82e12037")['contractAddress'];
+contractAddress=getContractAddress("0x34edd359562e30ef4e2ac0cf6db8a99798745e898883273897b8e9214334bc94")['contractAddress'];
 console.log(contractAddress)
 var contract = vnt.core.contract(abi).at(contractAddress);
 // send('mint',["lee",1,'0x01'],account,getNonce(account));
@@ -114,7 +114,7 @@ var contract = vnt.core.contract(abi).at(contractAddress);
 // send("mint",["Ben simmons",10,"abcd"],ac  count,getNonce(account));
 // send("changeTokenStatus",[1,1],account,getNonce(account))
 var result=contract.getTokenCerti.call(0);
-console.log(result);
+console.log(result.toString());
 
 // const tmp=vnt.core.getTransactionReceipt('0x15a41efdc4f9e6577609a8fdf9be61ec8128909c9d9a34ce65c65c815f323304');
 // console.log(tmp);
