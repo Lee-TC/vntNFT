@@ -1,27 +1,19 @@
 const crypto = require("crypto");
-const fs = require("fs");
-function genKeyPair() {
-  // Generates an object where the keys are stored in properties `privateKey` and `publicKey`
-  const keyPair = crypto.generateKeyPairSync("rsa", {
-    modulusLength: 512, // bits - standard for RSA keys
-    publicKeyEncoding: {
-      type: "pkcs1", // "Public Key Cryptography Standards 1"
-      format: "pem", // Most common formatting choice
-    },
-    privateKeyEncoding: {
-      type: "pkcs1", // "Public Key Cryptography Standards 1"
-      format: "pem", // Most common formatting choice
-    },
-  });
-  // Create the public key file
-  fs.writeFileSync(__dirname + "/../ks/id_rsa_pub.pem", keyPair.publicKey);
-  // Create the private key file
-  fs.writeFileSync(__dirname + "/../ks/id_rsa_priv.pem", keyPair.privateKey);
-}
-// Generates the keypair
-genKeyPair();
 
-const privateKey = fs.readFileSync(__dirname + "/../ks/id_rsa_priv.pem", "utf8");
+const keyPair = crypto.generateKeyPairSync("rsa", {
+  modulusLength: 512, // bits - standard for RSA keys
+  publicKeyEncoding: {
+    type: "pkcs1", // "Public Key Cryptography Standards 1"
+    format: "pem", // Most common formatting choice
+  },
+  privateKeyEncoding: {
+    type: "pkcs1", // "Public Key Cryptography Standards 1"
+    format: "pem", // Most common formatting choice
+  },
+});
+
+privateKey=keyPair.privateKey;
+publicKey=keyPair.publicKey;
 
 // JSON object
 const person = {
@@ -41,3 +33,7 @@ const signature = sign.toString('base64');
 
 // Printing the signature
 console.log(`Signature:\n\n ${signature}`);
+
+const result = crypto.verify("SHA256",data,publicKey,Buffer.from(signature,'base64'))
+
+console.log()

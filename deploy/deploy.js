@@ -113,8 +113,8 @@ var contract = vnt.core.contract(abi).at(contractAddress);
 // send('changeTokenPrice',[0,6],account,getNonce(account));
 // send("mint",["Ben simmons",10,"abcd"],ac  count,getNonce(account));
 // send("changeTokenStatus",[1,1],account,getNonce(account))
-var result=contract.getTokenCerti.call(0);
-console.log(result.toString());
+var result=contract.getTokenCerti.call(1);
+console.log(result);
 
 // const tmp=vnt.core.getTransactionReceipt('0x15a41efdc4f9e6577609a8fdf9be61ec8128909c9d9a34ce65c65c815f323304');
 // console.log(tmp);

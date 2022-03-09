@@ -21,8 +21,9 @@ const IC = (tokenId) =>{
     fs.writeFileSync(__dirname +"/../Certificate.json",JSON.stringify(Certifi))
     const privateKey = fs.readFileSync(__dirname + "/../../ks/id_rsa_priv.pem", "utf8");
     const data = Buffer.from(JSON.stringify(Certifi));
-    const sign = crypto.sign("SHA256", data , privateKey);
-    const signature = sign.toString();
+    console.log(data.toString())
+    const sign = crypto.sign('SHA256', data , privateKey);
+    const signature = sign.toString('base64');
     try {
         send("IssueCerti",[tokenId,signature],account,getNonce(account));
     }
