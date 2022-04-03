@@ -12,13 +12,14 @@ const getRole = require("./chainFunc/getRole")
 const setRole = require("./chainFunc/setRole")
 const IssueCerti = require("./chainFunc/IssueCerti")
 const VerifyCerti = require("./chainFunc/VerifyCerti")
-// IssueCerti(1)
-console.log(VerifyCerti(1))
+// IssueCerti(3)
+
+ console.log(VerifyCerti(3))
 // console.log()
 // console.log(getRole('0x7a0b95d73f9d58881f95b3487344c7108463e887'))
-// for (i=0;i<getTotalToken();i++)
-// {
-//     console.log(getTokenName(i),getTokenPrice(i),getTokenStatus(i));
-// }
+//for (i=0;i<getTotalToken();i++)
+//{
+//    console.log(getTokenName(3),getTokenPrice(3),getTokenStatus(3));
+//}
 
 

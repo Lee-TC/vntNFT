@@ -321,9 +321,9 @@ void changeTokenStatus(int32 tokenId,int32 newStatus)
     Require(_exists(tokenId),"Nonexistent token");
 
     _UserRole.key=GetSender();
-    Require(_UserRole.value==1,"You are NOT the Admin");
-
+    Require(_UserRole.value==1 || Equal(ownerOf(tokenId),GetSender()),"You can't change the TokenStatus");
     //address类型本质是字符串，所以需要使用Equal去比较（坑）
+    //2022.3.16 更改 还未编译
     tokens.index=tokenId;
     tokens.value.status=newStatus;
 }
